@@ -125,7 +125,7 @@ static uint32_t FOE_fread (uint8_t * data, uint32_t maxlength)
    while (maxlength && (FOEvar.fend - FOEvar.fposition))
    {
       maxlength--;
-      *(data++) = foe_file->fbuffer[FOEvar.fposition++];
+      *(data++) = foe_file->read_fbuffer[FOEvar.fposition++];
       ncopied++;
    }
 
@@ -154,10 +154,10 @@ static uint32_t FOE_fwrite (uint8_t *data, uint32_t length)
     while (length && (FOEvar.fend - FOEvar.fposition) && !failed)
     {
        length--;
-       foe_file->fbuffer[FOEvar.fbufposition++] = *(data++);
+       foe_file->write_fbuffer[FOEvar.fbufposition++] = *(data++);
        if(FOEvar.fbufposition >= foe_file->buffer_size)
        {
-          failed = foe_file->write_function (foe_file, foe_file->fbuffer, FOEvar.fbufposition);
+          failed = foe_file->write_function (foe_file, foe_file->write_fbuffer, FOEvar.fbufposition);
           FOEvar.fbufposition = 0;
           foe_file->address_offset += foe_file->buffer_size;
        }
@@ -190,7 +190,7 @@ static uint32_t FOE_fclose (void)
 
    DPRINT("FOE_fclose\n");
    
-   failed = foe_file->write_function (foe_file, foe_file->fbuffer, FOEvar.fbufposition);
+   failed = foe_file->write_function (foe_file, foe_file->write_fbuffer, FOEvar.fbufposition);
    foe_file->address_offset += FOEvar.fbufposition;
    FOEvar.fbufposition = 0;
 

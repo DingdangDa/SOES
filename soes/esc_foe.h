@@ -24,9 +24,11 @@ struct foe_file_cfg
    /** Size of file,sizeof data we can recv */
    uint32_t       max_data;
    /** Allocate static in caller func to fit buffer_size */
-   uint8_t * fbuffer;
+   uint8_t * read_fbuffer;
    /** Buffer size before we flush to destination */
    uint32_t  buffer_size;
+   /** Allocate static in caller func to fit buffer_size */
+   uint8_t * write_fbuffer;
    /** Where to store the data initially */
    uint32_t       dest_start_address;
    /** Current address during write of file */
